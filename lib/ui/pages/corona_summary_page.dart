@@ -3,6 +3,7 @@ import 'package:corona_live/blocs/coronaSummaryBloc/corona_summary_event.dart';
 import 'package:corona_live/blocs/coronaSummaryBloc/corona_summary_state.dart';
 import 'package:corona_live/res/colors/app_colors.dart';
 import 'package:corona_live/ui/widgets/app_widgets.dart';
+import 'package:corona_live/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:neumorphic/neumorphic.dart';
@@ -56,12 +57,26 @@ class _CoronaSummaryPageState extends State<CoronaSummaryPage> {
     return ListView(
       children: <Widget>[
         Container(
-          padding: EdgeInsets.only(top: 25.0,bottom: 15.0),
+          padding: EdgeInsets.only(top: 25.0,bottom: 10.0),
           alignment: Alignment.center,
           child: Text(
             "CORONA VIRUS SUMMARY",
             style: TextStyle(
               color: Colors.teal,
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0,
+              letterSpacing: 2.3,
+              fontFamily: "RussoOne",
+            ),
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.only(top: 25.0,bottom: 10.0),
+          alignment: Alignment.center,
+          child: Text(
+            Helper.millisecondsToDate(state.coronaSummary.updated),
+            style: TextStyle(
+              color: Colors.deepOrange,
               fontWeight: FontWeight.bold,
               fontSize: 20.0,
               letterSpacing: 2.3,
@@ -77,7 +92,7 @@ class _CoronaSummaryPageState extends State<CoronaSummaryPage> {
               fontWeight: FontWeight.bold,
               fontSize: 25.0,
               fontFamily: "RussoOne",
-              letterSpacing: 2.0,
+              letterSpacing: 2.5,
             ),
           ),
           alignment: Alignment.center,
@@ -87,8 +102,8 @@ class _CoronaSummaryPageState extends State<CoronaSummaryPage> {
             color: Colors.blue[900],
           ),
           margin: EdgeInsets.only(top: 30.0),
-          width: 180.0,
-          height: 180.0,
+          width: 150.0,
+          height: 150.0,
           curveType: CurveType.concave,
         ),
         Container(
@@ -113,6 +128,8 @@ class _CoronaSummaryPageState extends State<CoronaSummaryPage> {
               color: Colors.cyan,
               fontWeight: FontWeight.bold,
               fontSize: 25.0,
+              fontFamily: "RussoOne",
+              letterSpacing: 2.5,
             ),
           ),
         ),
@@ -139,6 +156,8 @@ class _CoronaSummaryPageState extends State<CoronaSummaryPage> {
               color: Colors.green,
               fontWeight: FontWeight.bold,
               fontSize: 25.0,
+              fontFamily: "RussoOne",
+              letterSpacing: 2.5,
             ),
           ),
         ),

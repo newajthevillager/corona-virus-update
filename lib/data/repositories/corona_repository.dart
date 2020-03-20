@@ -17,8 +17,8 @@ class CoronaRepository {
     return await coronaDataSource.getCoronaCountries();
   }
 
-  Future<CoronaCountry> fetchCoronaUpdateOfACountry(String country) async {
-    return await coronaDataSource.getCoronaUpdateOfACountry(country);
+  List<CoronaCountry> fetchFilteredCountries(String text, List<CoronaCountry> countries) {
+    return coronaDataSource.getFilteredCountries(text, countries);
   }
 
 }

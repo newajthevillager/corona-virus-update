@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class CoronaDataSource {
-
   // corona summary
   Future<CoronaSummary> getCoronaSummary() async {
     var response = await http.get(AppConstants.coronaSummeryUrl);
@@ -31,18 +30,17 @@ class CoronaDataSource {
     }
   }
 
-  // corona condition of a given country
-  Future<CoronaCountry> getCoronaUpdateOfACountry(String country) async {
-    var response = await http.get("${AppConstants.allCountriesDataUrl}/$country");
-    if (response.statusCode == 200) {
-      print("Country Ok");
-      var data = json.decode(response.body);
-      CoronaCountry coronaCountry = CoronaCountry.fromJson(data);
-      return coronaCountry;
-    } else {
-      print("Country Exception");
-      throw Exception();
+  List<CoronaCountry> getFilteredCountries(
+      String text, List<CoronaCountry> countries) {
+    if (countries.length == 0) {
+      print("empty list to filter");
+      return [];
     }
+    List<CoronaCountry> list = countries
+        .where((country) =>
+            country.country.toLowerCase().contains(text.trim().toLowerCase()))
+        .toList();
+    print("Filtered ${list.length}");
+    return list;
   }
-
 }

@@ -20,37 +20,39 @@ class CoronaCountriesBloc
       CoronaCountriesEvent event) async* {
     if (event is FetchCoronaCountries) {
       yield* _mapCoronaCountriesEventToState(event);
-    } else if (event is CoronaUpdateOfACountry) {
-      yield* _mapCoronaUpdateOfACountryToState(event);
+    } else if (event is FilterCountry) {
+      print("Event added");
+      yield* _mapFilterCountryToState(event);
     } else if (event is CrossBtnPressed) {
       yield CoronaCountriesLoaded(countries: list);
     }
   }
 
+  // fetch all corona affected countries
   Stream<CoronaCountriesState> _mapCoronaCountriesEventToState(
       FetchCoronaCountries event) async* {
-    print("cpnverting contries");
     yield CoronaCountriesLoading();
     try {
-      print("fetching contries");
       list = await coronaRepository.fetchCoronaCountries();
-      print("fetched contries ${list.length}");
       yield CoronaCountriesLoaded(countries: list);
     } catch (e) {
-      print("error contries");
       yield CoronaCountriesLoadFailure(message: e.toString());
     }
   }
 
-  Stream<CoronaCountriesState> _mapCoronaUpdateOfACountryToState(
-      CoronaUpdateOfACountry event) async* {
-    yield CountryUpdateLoading();
-    try {
-      CoronaCountry coronaCountry =
-          await coronaRepository.fetchCoronaUpdateOfACountry(event.country);
-      yield CountryUpdateLoaded(country: coronaCountry);
-    } catch (e) {
-      yield CountryUpdateLoadFailure(message: e.toString());
+  // filter countries
+  Stream<CoronaCountriesState> _mapFilterCountryToState(
+      FilterCountry event) async* {
+        print("loading");
+    yield CoronaCountriesLoading();
+    List<CoronaCountry> filteredCountries =
+        coronaRepository.fetchFilteredCountries(event.text, event.countries);
+    if (filteredCountries.length > 0) {
+      print("yielsing");
+      yield FilteredCountries(countries: filteredCountries);
+    } else {
+      print("not found");
+      yield NoCountryFound();
     }
   }
 }

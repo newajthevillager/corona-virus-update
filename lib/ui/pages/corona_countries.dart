@@ -18,7 +18,7 @@ class _CoronaCountriesState extends State<CoronaCountries> {
   CoronaCountriesBloc coronaCountriesBloc;
 
   bool isSearching = false;
-  List<CoronaCountry> filteredCountries = [];
+  List<CoronaCountry> list = []; // for filtering
   TextEditingController searchTextCntrlr = TextEditingController();
 
   @override
@@ -49,20 +49,19 @@ class _CoronaCountriesState extends State<CoronaCountries> {
                 autofocus: true,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                    icon: IconButton(
-                      icon: Icon(
-                        Icons.search,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        if (searchTextCntrlr.text != null) {
-                          coronaCountriesBloc.add(CoronaUpdateOfACountry(
-                              country: searchTextCntrlr.text.trim()));
-                        }
-                      },
-                    ),
-                    hintText: "Search by Country",
-                    hintStyle: TextStyle(color: Colors.white)),
+                  icon: Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
+                  hintText: "Search by Country",
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+                onChanged: (value) {
+                  coronaCountriesBloc.add(FilterCountry(
+                    text: value,
+                    countries: list
+                  ));
+                },
               ),
         centerTitle: true,
         actions: <Widget>[
@@ -98,18 +97,15 @@ class _CoronaCountriesState extends State<CoronaCountries> {
                 return buildLoadingUi();
               } else if (state is CoronaCountriesLoaded) {
                 List<CoronaCountry> countries = state.countries;
-                filteredCountries = countries;
+                list = countries;
                 return buildCoronaCountriesList(countries);
               } else if (state is CoronaCountriesLoadFailure) {
                 return buildErrorUi(state.message);
-              } else if (state is CountryUpdateLoading) {
-                return buildLoadingUi();
-              } else if (state is CountryUpdateLoaded) {
-                List<CoronaCountry> country = [state.country];
-                return buildCoronaCountriesList(country);
-              } else if (state is CountryUpdateLoadFailure) {
-                print("E msg : ${state.message}");
-                return buildErrorUi(state.message);
+              } else if (state is FilteredCountries) {
+                print("Yielded : ${state.toString()}");
+                return buildCoronaCountriesList(state.countries);
+              } else if (state is NoCountryFound) {
+                return buildErrorUi("No Country Found");
               }
             },
           ),
@@ -239,15 +235,5 @@ class _CoronaCountriesState extends State<CoronaCountries> {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return CoronaCountryDetailsPage(country: country);
     }));
-  }
-
-  void _filterCountries(String value) {
-    if (filteredCountries.length != 0) {
-      filteredCountries = filteredCountries
-          .where((country) =>
-              country.country.toLowerCase().contains(value.toLowerCase()))
-          .toList();
-      print("Filter : ${filteredCountries.length}");
-    }
   }
 }

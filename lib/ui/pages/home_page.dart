@@ -42,20 +42,13 @@ class _HomePageState extends State<HomePage> {
         ),
         unselectedItemColor: Colors.grey[700],
       ),
-      body: Container(
-        child: buildTabs(current_tab),
+      body: IndexedStack(
+        children: <Widget>[
+          CoronaSummaryPage(),
+          CoronaCountries(),
+        ],
+        index: current_tab,
       ),
     );
-  }
-
-  Widget buildTabs(int index) {
-    switch (index) {
-      case 0:
-        return CoronaSummaryPage();
-        break;
-      case 1:
-        return CoronaCountries();
-        break;
-    }
   }
 }

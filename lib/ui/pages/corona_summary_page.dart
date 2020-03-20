@@ -175,4 +175,8 @@ class _CoronaSummaryPageState extends State<CoronaSummaryPage> {
       ],
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

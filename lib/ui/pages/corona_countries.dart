@@ -147,7 +147,7 @@ class _CoronaCountriesState extends State<CoronaCountries> {
                           child: Text(
                             coronaCountry.country.toUpperCase(),
                             style: TextStyle(
-                              color: AppColors.countryNameColor,
+                              color: AppColors.cyan,
                               fontSize: 20.0,
                               fontFamily: "RussoOne",
                               letterSpacing: 1.5,
@@ -160,7 +160,7 @@ class _CoronaCountriesState extends State<CoronaCountries> {
                           child: Text(
                             "Cases : ${coronaCountry.cases.toString()}",
                             style: TextStyle(
-                              color: AppColors.casesColor,
+                              color: AppColors.green,
                               fontSize: 17.0,
                             ),
                           ),
@@ -185,7 +185,7 @@ class _CoronaCountriesState extends State<CoronaCountries> {
                                         style: TextStyle(
                                           fontSize: 17,
                                           fontFamily: "RussoOne",
-                                          color: AppColors.deathsColor,
+                                          color: AppColors.white,
                                           letterSpacing: 1.5,
                                         ),
                                       ),
@@ -210,8 +210,8 @@ class _CoronaCountriesState extends State<CoronaCountries> {
                                           fontSize: 17,
                                           fontFamily: "RussoOne",
                                           color: coronaCountry.todayDeaths == 0
-                                              ? AppColors.todayNoDeathColor
-                                              : AppColors.todayDeathsColor,
+                                              ? AppColors.teal
+                                              : AppColors.red,
                                         ),
                                       ),
                                     ]),

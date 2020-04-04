@@ -23,7 +23,6 @@ class _CoronaCountriesState extends State<CoronaCountries> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     coronaCountriesBloc = BlocProvider.of<CoronaCountriesBloc>(context);
     coronaCountriesBloc.add(FetchCoronaCountries());
@@ -59,7 +58,7 @@ class _CoronaCountriesState extends State<CoronaCountries> {
                 onChanged: (value) {
                   coronaCountriesBloc.add(FilterCountry(
                     text: value,
-                    countries: list
+                    countries: list,
                   ));
                 },
               ),
@@ -92,20 +91,17 @@ class _CoronaCountriesState extends State<CoronaCountries> {
           height: scrHeight,
           child: BlocBuilder<CoronaCountriesBloc, CoronaCountriesState>(
             builder: (context, state) {
-              print("State is : ${state.toString()}");
               if (state is CoronaCountriesLoading) {
                 return buildLoadingUi();
               } else if (state is CoronaCountriesLoaded) {
-                List<CoronaCountry> countries = state.countries;
-                list = countries;
-                return buildCoronaCountriesList(countries);
+                list = state.countries;
+                return buildCoronaCountriesList(state.countries);
               } else if (state is CoronaCountriesLoadFailure) {
                 return buildErrorUi(state.message);
               } else if (state is FilteredCountries) {
-                print("Yielded : ${state.toString()}");
                 return buildCoronaCountriesList(state.countries);
-              } else if (state is NoCountryFound) {
-                return buildErrorUi("No Country Found");
+              } else if (state is NoCountriesFound) {
+                return buildErrorUi("No Countries Found");
               }
             },
           ),

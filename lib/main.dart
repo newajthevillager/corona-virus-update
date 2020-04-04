@@ -9,9 +9,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+
   final CoronaRepository coronaRepository = CoronaRepository(
     coronaDataSource: CoronaDataSource(),
   );
+  
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +26,14 @@ class MyApp extends StatelessWidget {
       home: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) =>
-                CoronaSummaryBloc(coronaRepository: coronaRepository),
+            create: (context) => CoronaBloc(
+              coronaRepository: coronaRepository,
+            ),
           ),
           BlocProvider(
-            create: (context) =>
-                CoronaCountriesBloc(coronaRepository: coronaRepository),
+            create: (context) => CoronaCountriesBloc(
+              coronaRepository: coronaRepository,
+            ),
           ),
         ],
         child: HomePage(),

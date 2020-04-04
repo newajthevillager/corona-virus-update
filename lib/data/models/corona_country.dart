@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class CoronaCountryList {
   List<CoronaCountry> countries;
 
@@ -15,14 +13,14 @@ class CoronaCountryList {
 
 class CoronaCountry {
   String country;
-  int cases;
-  int todayCases;
-  int deaths;
-  int todayDeaths;
-  int recovered;
-  int critical;
-  int active;
-  int casesPerOneMillion;
+  var cases;
+  var todayCases;
+  var deaths;
+  var todayDeaths;
+  var recovered;
+  var critical;
+  var active;
+  var casesPerOneMillion;
 
   CoronaCountry({
     this.country,

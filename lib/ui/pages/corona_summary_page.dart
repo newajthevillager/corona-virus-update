@@ -14,36 +14,37 @@ class CoronaSummaryPage extends StatefulWidget {
 }
 
 class _CoronaSummaryPageState extends State<CoronaSummaryPage> {
-  CoronaSummaryBloc coronaSummaryBloc;
   double scrHeight, scrWidth;
+
+  CoronaBloc coronaBloc;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    coronaSummaryBloc = BlocProvider.of<CoronaSummaryBloc>(context);
-    coronaSummaryBloc.add(FetchCoronaSummary());
+    coronaBloc = BlocProvider.of<CoronaBloc>(context);
+    coronaBloc.add(FetchCoronaSummary());
   }
 
   @override
   Widget build(BuildContext context) {
     scrHeight = MediaQuery.of(context).size.height;
     scrWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          color: AppColors.darkBg,
+          color: Colors.grey[850],
           height: scrHeight,
-          child: BlocBuilder<CoronaSummaryBloc, CoronaSummaryState>(
-            builder: (context, coronaSummaryState) {
-              if (coronaSummaryState is CoronaSummaryInitial) {
+          child: BlocBuilder<CoronaBloc, CoronaSummaryState>(
+            builder: (context, state) {
+              if (state is CoronaSummaryInitial) {
                 return buildLoadingUi();
-              } else if (coronaSummaryState is CoronaSummaryLoading) {
+              } else if(state is CoronaSummaryLoadingState) {
                 return buildLoadingUi();
-              } else if (coronaSummaryState is CoronaSummaryLoaded) {
-                return buildSuccessUi(coronaSummaryState);
-              } else if (coronaSummaryState is CoronaSummaryLoadFailure) {
-                return buildErrorUi(coronaSummaryState.message);
+              } else if (state is CoronaSummaryLoaded) {
+                return buildSuccessUi(state);
+              } else if (state is CoronaSummaryFailure) {
+                return buildErrorUi(state.message);
               }
             },
           ),
@@ -52,17 +53,16 @@ class _CoronaSummaryPageState extends State<CoronaSummaryPage> {
     );
   }
 
-  // success ui
   Widget buildSuccessUi(CoronaSummaryLoaded state) {
     return ListView(
       children: <Widget>[
         Container(
-          padding: EdgeInsets.only(top: 25.0,bottom: 10.0),
+          padding: EdgeInsets.only(top: 25.0, bottom: 10.0),
           alignment: Alignment.center,
-          child: Text(
+          child: NeuText(
             "CORONA VIRUS SUMMARY",
             style: TextStyle(
-              color: Colors.teal,
+              color: Colors.grey[800],
               fontWeight: FontWeight.bold,
               fontSize: 20.0,
               letterSpacing: 2.3,
@@ -71,15 +71,15 @@ class _CoronaSummaryPageState extends State<CoronaSummaryPage> {
           ),
         ),
         Container(
-          padding: EdgeInsets.only(top: 25.0,bottom: 10.0),
+          padding: EdgeInsets.only(top: 25.0, bottom: 10.0),
           alignment: Alignment.center,
           child: Text(
             Helper.millisecondsToDate(state.coronaSummary.updated),
             style: TextStyle(
-              color: Colors.deepOrange,
+              color: Colors.grey[700],
               fontWeight: FontWeight.bold,
               fontSize: 20.0,
-              letterSpacing: 2.3,
+              letterSpacing: 4.5,
               fontFamily: "RussoOne",
             ),
           ),
@@ -96,10 +96,10 @@ class _CoronaSummaryPageState extends State<CoronaSummaryPage> {
             ),
           ),
           alignment: Alignment.center,
-          bevel: 5.0,
+          bevel: 25.0,
           decoration: NeumorphicDecoration(
             shape: BoxShape.circle,
-            color: Colors.blue[900],
+            color: Colors.grey[850],
           ),
           margin: EdgeInsets.only(top: 30.0),
           width: 150.0,
@@ -109,11 +109,12 @@ class _CoronaSummaryPageState extends State<CoronaSummaryPage> {
         Container(
           margin: EdgeInsets.symmetric(vertical: 25.0),
           alignment: Alignment.center,
-          child: Text(
+          child: NeuText(
             "TOTAL DEATH",
             style: TextStyle(
-              color: Colors.red[900],
+              color: Colors.grey[800],
               fontWeight: FontWeight.bold,
+              
               fontSize: 25.0,
             ),
           ),
@@ -125,21 +126,21 @@ class _CoronaSummaryPageState extends State<CoronaSummaryPage> {
           child: Text(
             state.coronaSummary.cases.toString(),
             style: TextStyle(
-              color: Colors.cyan,
+              color: Colors.grey[700],
               fontWeight: FontWeight.bold,
               fontSize: 25.0,
               fontFamily: "RussoOne",
-              letterSpacing: 2.5,
+              letterSpacing: 4.5,
             ),
           ),
         ),
         Container(
           margin: EdgeInsets.only(bottom: 30.0),
           alignment: Alignment.center,
-          child: Text(
+          child: NeuText(
             "TOTAL CASE",
             style: TextStyle(
-              color: Colors.cyan,
+              color: Colors.grey[800],
               fontWeight: FontWeight.bold,
               fontSize: 25.0,
             ),
@@ -153,20 +154,20 @@ class _CoronaSummaryPageState extends State<CoronaSummaryPage> {
           child: Text(
             state.coronaSummary.recovered.toString(),
             style: TextStyle(
-              color: Colors.green,
+              color: Colors.grey[700],
               fontWeight: FontWeight.bold,
               fontSize: 25.0,
               fontFamily: "RussoOne",
-              letterSpacing: 2.5,
+              letterSpacing: 4.5,
             ),
           ),
         ),
         Container(
           alignment: Alignment.center,
-          child: Text(
+          child: NeuText(
             "TOTAL RECOVERED",
             style: TextStyle(
-              color: Colors.green,
+              color: Colors.grey[800],
               fontWeight: FontWeight.bold,
               fontSize: 25.0,
             ),
@@ -175,8 +176,4 @@ class _CoronaSummaryPageState extends State<CoronaSummaryPage> {
       ],
     );
   }
-
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
 }

@@ -6,7 +6,7 @@ import 'package:meta/meta.dart';
 class CoronaRepository {
 
   CoronaDataSource coronaDataSource;
-  
+
   CoronaRepository({@required this.coronaDataSource});
 
   Future<CoronaSummary> fetchCoronaSummary() async {
@@ -17,8 +17,8 @@ class CoronaRepository {
     return await coronaDataSource.getCoronaCountries();
   }
 
-  List<CoronaCountry> fetchFilteredCountries(String text, List<CoronaCountry> countries) {
-    return coronaDataSource.getFilteredCountries(text, countries);
+  List<CoronaCountry> fetchFilteredCountries(String text, List<CoronaCountry> list) {
+    return coronaDataSource.getFilteredCountries(text, list);
   }
-
+  
 }

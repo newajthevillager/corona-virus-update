@@ -30,16 +30,20 @@ class CoronaCountriesLoadFailure extends CoronaCountriesState {
   List<Object> get props => null;
 }
 
+
 class FilteredCountries extends CoronaCountriesState {
+
   final List<CoronaCountry> countries;
 
   FilteredCountries({@required this.countries});
 
   @override
+  // TODO: implement props
   List<Object> get props => null;
 }
 
-class NoCountryFound extends CoronaCountriesState {
+class NoCountriesFound extends CoronaCountriesState {
   @override
+  // TODO: implement props
   List<Object> get props => null;
 }

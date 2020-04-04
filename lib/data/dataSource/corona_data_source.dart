@@ -1,46 +1,42 @@
-import 'package:corona_live/data/models/corona_country.dart';
-import 'package:corona_live/data/models/corona_summary.dart';
-import 'package:corona_live/res/strings/app_constants.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:corona_live/data/models/corona_country.dart';
+import 'package:corona_live/data/models/corona_summary.dart';
+import 'package:corona_live/res/strings/app_strings.dart';
+import 'package:http/http.dart' as http;
+
 class CoronaDataSource {
-  // corona summary
+
   Future<CoronaSummary> getCoronaSummary() async {
-    var response = await http.get(AppConstants.coronaSummeryUrl);
+    var response = await http.get(AppString.corona_summary_url);
     if (response.statusCode == 200) {
-      var data = json.decode(response.body); // gets response in json
-      CoronaSummary summary = CoronaSummary.fromJson(data);
-      return summary;
+      var data = json.decode(response.body);
+      CoronaSummary coronaSummary = CoronaSummary.fromJson(data);
+      return coronaSummary;
     } else {
       throw Exception();
     }
   }
 
-  // corona affected countries
   Future<List<CoronaCountry>> getCoronaCountries() async {
-    var response = await http.get(AppConstants.allCountriesDataUrl);
+    var response =  await http.get(AppString.corona_countries_url);
     if (response.statusCode == 200) {
-      var data = json.decode(response.body); // json data
-      List<CoronaCountry> countries =
-          CoronaCountryList.fromJson(data).countries;
+      var data = json.decode(response.body);
+      List<CoronaCountry> countries = CoronaCountryList.fromJson(data).countries;
       return countries;
     } else {
       throw Exception();
     }
   }
 
-  List<CoronaCountry> getFilteredCountries(
-      String text, List<CoronaCountry> countries) {
+  List<CoronaCountry> getFilteredCountries(String text, List<CoronaCountry> countries) {
     if (countries.length == 0) {
-      print("empty list to filter");
       return [];
+    } else {
+      List<CoronaCountry> list = countries.where((country) => country.country.toLowerCase().contains(text.trim().toLowerCase()))
+      .toList();
+      return list;
     }
-    List<CoronaCountry> list = countries
-        .where((country) =>
-            country.country.toLowerCase().contains(text.trim().toLowerCase()))
-        .toList();
-    print("Filtered ${list.length}");
-    return list;
   }
+  
 }
